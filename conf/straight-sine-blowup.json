@@ -2,11 +2,11 @@
     "family": "2x+S",
     "dynamics": {
         "default_starting_point": 0.2142,
-        "nb_starting_points": 4,
+        "nb_starting_points": 5,
+        "nb_starting_points_v1": 4,
         "nb_starting_points_v2": 20,
-        "_nb_initial_iterations": 3,
-        "_max_period": 2,
-        "nb_initial_iterations": 300,
+        "nb_initial_iterations": 1200,
+        "nb_initial_iterations_v1": 300,
         "nb_initial_iterations_v2": 1200,
         "max_period": 20,
         "max_period_v2": 50,
@@ -22,7 +22,8 @@
         "width": 1600,
         "height": 1600,
         "image_names": {
-            "periods": "straight-sine-blowup"
+            "periods": "straight-sine-blowup-v2",
+            "periods_v1": "straight-sine-blowup"
         }
     },
     "misc": {
