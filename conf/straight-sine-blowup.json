@@ -1,0 +1,33 @@
+{
+    "family": "2x+S",
+    "dynamics": {
+        "default_starting_point": 0.2142,
+        "nb_starting_points": 4,
+        "nb_starting_points_v2": 20,
+        "_nb_initial_iterations": 3,
+        "_max_period": 2,
+        "nb_initial_iterations": 300,
+        "nb_initial_iterations_v2": 1200,
+        "max_period": 20,
+        "max_period_v2": 50,
+        "periodicity_tol": 1.0e-3
+    },
+    "domain": {
+        "a_range": [ 0.75, 0.762 ],
+        "b_range": [ 0.988, 1.0 ]
+    },
+    "images": {
+        "_width": 12,
+        "_height": 12,
+        "width": 1600,
+        "height": 1600,
+        "image_names": {
+            "periods": "straight-sine-blowup"
+        }
+    },
+    "misc": {
+        "show_progress": true
+    }
+}
+
+
