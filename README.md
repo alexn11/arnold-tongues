@@ -8,6 +8,8 @@ pip install -r requirements.txt
 
 # web interface
 
+![how the web interface should look like](app-sample "the web interface (example)")
+
 launch the web interface with (from the root folder):
 ```bash
 flask run
