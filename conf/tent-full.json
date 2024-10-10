@@ -1,10 +1,10 @@
 {
-    "family": "2x+S",
+    "family": "2x+T",
     "dynamics": {
         "default_starting_point": 0.2142,
         "nb_starting_points": 7,
         "nb_initial_iterations": 750,
-        "max_period": 20,
+        "max_period": 10,
         "periodicity_tol": 1.0e-4
     },
     "domain": {
@@ -15,7 +15,7 @@
         "width": 1600,
         "height": 800,
         "image_names": {
-            "periods": "straight-sine-full"
+            "periods": "tent-full"
         }
     },
     "misc": {
