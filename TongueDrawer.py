@@ -68,20 +68,23 @@ class TongueDrawer:
             raise ValueError(f'not enough colours ({len(image_periods_colours)}) for max period = {self.max_period}')
         self.image_periods_colours = np.array(image_periods_colours)
         self.do_show_progress = options_other.get('show_progress', True)
-    def compute_the_tongues(self,):
+    def setup_parameter_grid(self,):
         parameter_grid = create_grid(self.a_start, self.a_end,
                                      self.b_start, self.b_end,
-                                     self.image_height, self.image_width,
-                                     output_type='real')
+                                     self.image_width, self.image_height,
+                                     output_type='real',)
+        print(f'parameter grid (na, nb, 2): {parameter_grid.shape}')
         self._parameter_grid = parameter_grid
         self._a = self._parameter_grid[..., 0]
         self._b = self._parameter_grid[..., 1]
-        print(f'parameter grid (na, nb, 2): {parameter_grid.shape}')
+    def compute_starting_points(self,):
         starting_points = self.iterator.setup_starting_points(
                                             self._a, self._b,
                                             self.default_starting_point,
                                             nb_starting_points=self.nb_starting_points)
         print(f'starting_points (na, nb, Ns): {starting_points.shape}')
+    def compute_fates_and_periods(self, ):
+        starting_points = self.compute_starting_points()
         periods = self.iterator.determine_periodicities(self._a, self._b, starting_points,
                                                         max_period=self.max_period,
                                                         nb_initial_iterations=self.nb_initial_iterations,
@@ -95,6 +98,9 @@ class TongueDrawer:
         #periods = periods.min(axis=-1)
         print(f'periods (na, nb): {periods.shape} - dtype={periods.dtype}')
         self._periods = periods
+    def compute_the_tongues(self,):
+        self.setup_parameter_grid()
+        self.compute_fates_and_periods()
     def draw_is_periodic(self,):
         image = convert_values_to_colours(self._parameter_fates,
                                           colours=self.image_is_periodic_colours,)
