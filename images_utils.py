@@ -67,14 +67,15 @@ def draw_points(image_width,
 def create_grid(x_start, x_end, y_start, y_end,
                 width, height,
                 output_shape='grid',
-                output_type='complex'):
+                output_type='complex',
+                _indexing='ij'):
    x = numpy.linspace(x_start, x_end, endpoint=False, num=width)
    y = numpy.linspace(y_end, y_start, endpoint=False, num=height)
    if(output_shape == 'axes'):
       return x, y
    elif(output_shape != 'grid'):
       raise ValueError(f'unexpected output shape specification: "{output_shape}"')
-   x, y = numpy.meshgrid(x, y, indexing='ij')
+   x, y = numpy.meshgrid(x, y, indexing=_indexing)
    if(output_type == 'complex'):
       grid = x + 1.j * y
    elif(output_type == 'real'):
