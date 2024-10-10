@@ -64,20 +64,3 @@ def tongue_api():
     config = prepare_config(flask.request.json)
     tongue_images = draw_the_tongues(config)
     return flask.send_file(tongue_images['periods'], mimetype='image/png')
-
-import io
-import numpy as np
-from PIL import Image
-
-@app.route('/api/image', methods=['POST'])
-def testing():
-    request_body = flask.request.json
-    print(f'request body: {request_body}')
-    img_data = np.random.random((request_body['width'], request_body['height'], 3))
-    img_data = (256 * img_data).astype(int)
-    print(f'img={img_data.shape}')
-    img = Image.fromarray(img_data, mode='RGB')
-    image_stream = io.BytesIO()
-    img.save(image_stream, "PNG")
-    image_stream.seek(0)
-    return flask.send_file(image_stream, mimetype='image/png')
