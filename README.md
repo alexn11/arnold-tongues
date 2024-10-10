@@ -38,4 +38,4 @@ in the root folder, run:
 ```bash
 pytest
 ```
-(if necessary do a "export PYTHONPATH=`pwd`" beforehand)
+(if necessary do a `export PYTHONPATH='pwd'` beforehand)
