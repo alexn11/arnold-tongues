@@ -1,5 +1,7 @@
 # installation (linux)
 
+(note: i didn't check if this really worked)
+
 - clone repo:
 ```bash
 git clone https://github.com/alexn11/arnold-tongues
