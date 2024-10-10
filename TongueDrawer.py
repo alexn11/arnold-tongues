@@ -49,6 +49,7 @@ class TongueDrawer:
         self.max_period = options_dynamics.get('max_period', 1)
     def set_other_options(self, options_other: dict):
         self.do_show_progress = options_other.get('show_progress', True)
+        self.do_output_images_as_stream = options_other.get('stream', False)
     def set_image_options(self, options_image: dict):
         self.image_width = options_image.get('width', 400)
         self.image_height = options_image.get('height', 200)
@@ -115,17 +116,21 @@ class TongueDrawer:
     def draw_is_periodic(self,):
         image = convert_values_to_colours(self._parameter_fates,
                                           colours=self.image_is_periodic_colours,)
-        save_image(self.image_names['is_periodic'], image)
+        return save_image(self.image_names['is_periodic'], image, as_stream=self.do_output_images_as_stream)
     def draw_periods(self, ):
         image = convert_values_to_colours(self._parameter_fates,
                                           self.image_periods_colours,
                                           shading_values = self.max_period + 1 - self._periods,
                                           max_shading_value=self.max_period)
-        save_image(self.image_names['periods'], image)
-    def draw_the_tongues(self, do_compute=True):
+        return save_image(self.image_names['periods'], image, as_stream=self.do_output_images_as_stream)
+    def draw_the_tongues(self, do_compute=True) -> dict:
         if(do_compute):
             self.compute_the_tongues()
+        image_outputs = {}
         if('is_periodic' in self.image_names):
-            self.draw_is_periodic()
+            image_is_periodic = self.draw_is_periodic()
+            image_outputs['is_periodic'] = image_outputs
         if('periods' in self.image_names):
-            self.draw_periods()
+            image_periods = self.draw_periods()
+            image_outputs['periods'] = image_periods
+        return image_outputs

@@ -1,3 +1,5 @@
+import io
+
 from matplotlib import colormaps
 import numpy
 import numpy as np
@@ -7,16 +9,24 @@ from PIL import Image
 def save_image(image_name: str,
                pixels: np.ndarray,
                do_flip: bool = False,
-               silent: bool=False):
+               silent: bool=False,
+               as_stream: bool=False) -> str | io.BytesIO:
    rgba8_pixels = np.round(255 * pixels).astype(np.uint8).transpose(1, 0, 2)
    image = Image.fromarray(rgba8_pixels)
    if (do_flip):
       image = image.transpose(Image.FLIP_TOP_BOTTOM)
    if(not image_name.endswith('.png')):
       image_name = image_name + '.png'
-   if(not silent):
-      print(f'saving image to: "{image_name}"')
-   image.save(image_name, "PNG")
+   if(not as_stream):
+      if(not silent):
+         print(f'saving image to: "{image_name}"')
+      image.save(image_name, "PNG")
+      return image_name
+   else:
+      image_stream = io.BytesIO()
+      image.save(image_stream, "PNG")
+      image_stream.seek(0)
+      return image_stream
 
 
 def convert_point_coordinates_to_image_coordinates(
