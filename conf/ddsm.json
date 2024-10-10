@@ -18,7 +18,8 @@
         "height": 1600,
         "image_names": {
             "periods": "ddsm-blowup"
-        }
+        },
+        "periods_colours": "plasma"
     },
     "misc": {
         "show_progress": true

@@ -38,14 +38,18 @@ class TongueDrawer:
                          options_dynamics=options_dynamics,
                          options_image=options_image,
                          options_other=options_other)
-    def set_options(self,
-                    options_domain: dict = {},
-                    options_dynamics: dict = {},
-                    options_image: dict = {},
-                    options_other: dict = {}):
+    def set_domain_options(self, options_domain):
         self.a_start, self.a_end = options_domain.get('a_range', (0., 1.))
         self.b_start, self.b_end = options_domain.get('b_range', (0.5, 1.))
         self.b = options_domain.get('b', 0.875)
+    def set_dynamics_options(self, options_dynamics: dict):
+        self.default_starting_point = options_dynamics.get('default_starting_point', 0.2)
+        self.nb_starting_points = options_dynamics.get('nb_starting_points', 1)
+        self.nb_initial_iterations = options_dynamics.get('nb_initial_iterations', 0)
+        self.max_period = options_dynamics.get('max_period', 1)
+    def set_other_options(self, options_other: dict):
+        self.do_show_progress = options_other.get('show_progress', True)
+    def set_image_options(self, options_image: dict):
         self.image_width = options_image.get('width', 400)
         self.image_height = options_image.get('height', 200)
         self.image_names = options_image.get('image_names',
@@ -55,19 +59,25 @@ class TongueDrawer:
                                         })
         self.image_is_periodic_colours = np.array(options_image.get('is_periodic_colours', default_is_periodic_colours))
         image_periods_colours = options_image.get('periods_colours')
-        self.default_starting_point = options_dynamics.get('default_starting_point', 0.2)
-        self.nb_starting_points = options_dynamics.get('nb_starting_points', 1)
-        self.nb_initial_iterations = options_dynamics.get('nb_initial_iterations', 0)
-        self.max_period = options_dynamics.get('max_period', 1)
         if(image_periods_colours is None):
             if(len(default_type_colors) > self.max_period):
                 image_periods_colours = default_type_colors
             else:
                 image_periods_colours = make_palette(self.max_period + 1)
+        elif(isinstance(image_periods_colours, str)):
+            image_periods_colours = make_palette(self.max_period + 1, colour_map_name=image_periods_colours)
         if(len(image_periods_colours) <= self.max_period):
             raise ValueError(f'not enough colours ({len(image_periods_colours)}) for max period = {self.max_period}')
         self.image_periods_colours = np.array(image_periods_colours)
-        self.do_show_progress = options_other.get('show_progress', True)
+    def set_options(self,
+                    options_domain: dict = {},
+                    options_dynamics: dict = {},
+                    options_image: dict = {},
+                    options_other: dict = {}):
+        self.set_domain_options(options_domain)
+        self.set_dynamics_options(options_dynamics)
+        self.set_image_options(options_image)
+        self.set_other_options(options_other)
     def setup_parameter_grid(self,):
         parameter_grid = create_grid(self.a_start, self.a_end,
                                      self.b_start, self.b_end,
