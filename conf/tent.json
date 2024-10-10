@@ -3,8 +3,6 @@
     "dynamics": {
         "default_starting_point": 0.2142,
         "nb_starting_points": 5,
-        "_nb_initial_iterations": 3,
-        "_max_period": 2,
         "nb_initial_iterations": 300,
         "max_period": 10,
         "periodicity_tol": 1.0e-4
@@ -14,8 +12,6 @@
         "b_range": [ 0.5, 1.0 ]
     },
     "images": {
-        "_width": 12,
-        "_height": 12,
         "width": 1200,
         "height": 1200,
         "image_names": {

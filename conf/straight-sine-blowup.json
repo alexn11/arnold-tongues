@@ -17,8 +17,6 @@
         "b_range": [ 0.988, 1.0 ]
     },
     "images": {
-        "_width": 12,
-        "_height": 12,
         "width": 1600,
         "height": 1600,
         "image_names": {
