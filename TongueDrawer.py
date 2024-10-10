@@ -77,12 +77,13 @@ class TongueDrawer:
         self._parameter_grid = parameter_grid
         self._a = self._parameter_grid[..., 0]
         self._b = self._parameter_grid[..., 1]
-    def compute_starting_points(self,):
+    def compute_starting_points(self,) -> np.ndarray:
         starting_points = self.iterator.setup_starting_points(
                                             self._a, self._b,
                                             self.default_starting_point,
                                             nb_starting_points=self.nb_starting_points)
         print(f'starting_points (na, nb, Ns): {starting_points.shape}')
+        return starting_points
     def compute_fates_and_periods(self, ):
         starting_points = self.compute_starting_points()
         periods = self.iterator.determine_periodicities(self._a, self._b, starting_points,
