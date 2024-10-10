@@ -1,5 +1,10 @@
-# installation
+# installation (linux)
 
+- clone repo:
+```bash
+git clone https://github.com/alexn11/arnold-tongues
+cd arnold-tongues
+```
 - requires at least Python version 3.10
 - run:
 ```bash
