@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>tongue drawer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 20px;
+    }
+    .image-area {
+      margin-top: 20px;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+    /*form {
+        display: block;
+        border: 2px solid black;
+        border-radius: 8px;
+    }*/
+  </style>
+</head>
+<body>
+
+<h1>tongue drawer</h1>
+<div class="image-area" id="image-area">
+</div>
+
+
+<div>
+<form id="main-form">
+<div>
+    <label for="family">family: </label>
+    <select id="family" name="family">
+        <option value="dsm">double standard map</option>
+        <option value="2xdsm">double double standard map</option>
+        <option value="2x+S">doubling plus straight sine</option>
+        <option value="2x+T">doubling plus tent</option>
+    </select>
+</div>
+
+<div>
+    <p>a: 
+        <label for="a-min">min </label>
+        <input type="number" id="a-min" name="a-min" value="0.0" size="20%">
+        <label for="a-max">max </label>
+        <input type="number" id="a-max" name="a-max" value="1.0" size="20%">
+    </p>
+    <p>
+        b: 
+        <label for="b-min">min </label>
+        <input type="number" id="b-min" name="b-min" value="0.0" size="20%">
+        <label for="b-max">max </label>
+        <input type="number" id="b-max" name="b-max" value="1.0" size="20%">
+    </p>
+</div>
+
+<div>
+    <p>
+    <label for="starting-point">starting point: </label>
+    <input type="number" id="starting-point" name="starting-point" value="0.0">
+    </p><p>
+    <label for="nb-starting-points">nb starting points: </label>
+    <input type="number" id="nb-starting-points" name="nb-starting-points" step="1" value="1">
+    </p><p>
+    <label for="nb-iterations">nb iterations: </label>
+    <input type="number" id="nb-iterations" name="nb-iterations" step="1" value="64">
+    </p><p>
+    <label for="max-period">max period: </label>
+    <input type="number" id="max-period" name="max-period" step="1" value="10">
+    </p><p>
+    <label for="tol">tolerance: </label>
+    <input type="number" id="tol" name="tol" value="1e-3">
+    </p>
+</div>
+
+<div>
+<p>
+    <label for="width">width: </label>
+    <input type="number" id="width" name="width" step="1" value="400">
+</p><p>
+    <label for="height">height: </label>
+    <input type="number" id="height" name="height" step="1" value="400">
+</p><p>
+    <label for="colours">colour map: </label>
+    <input type="text" id="colours" name="colours" value="magma">
+</p>
+</div>
+
+<div>
+    <button type="submit">draw</button>
+</div>
+</form>
+</div>
+
+<script>
+
+function signal_error(element_id, msg) {
+    const label = document.querySelector(`label[for='${element_id}']`);
+    label.textContent = "*** " + element.textContent;
+    label.style.color = "red";
+    const image_area = document.getElementById('image-area');
+    image_area.innerHTML = `<p>error in inputs</p>`;
+}
+
+function get_form_value(id, convert_to) {
+    convert_to = convert_to || "string";
+    let value = document.getElementById(id).value
+    if(convert_to == "string") {
+        return value;
+    }
+    if(convert_to == "int") {
+        value = parseInt(value);
+        if(isNaN(value)) {
+            signal_error(id, "input should be an integer");
+        }
+    }
+    if(convert_to == "float") {
+        value = parseFloat(value);
+        if(isNaN(value)) {
+            signal_error(id, "input should be a number");
+        }
+    }
+    return value;
+}
+
+function prepare_api_inputs() {
+    const request_data = {
+        family: get_form_value('family'),
+        domain: {
+            a_range: [ get_form_value('a-min', "float"), get_form_value('a-max', 'float') ],
+            b_range: [ get_form_value('b-min', 'float'), get_form_value('b-max', 'float') ],
+        },
+        dynamics: {
+            default_starting_point: get_form_value('starting-point', "float"),
+            nb_starting_points: get_form_value('nb-starting-points', "int"),
+            nb_initial_iterations: get_form_value('nb-iterations', "int"),
+            max_period: get_form_value('max-period', "int"),
+            periodicity_tol: get_form_value('tol', "float")
+        },
+        images: {
+            width: get_form_value('width', "int"),
+            height: get_form_value('height', "int"),
+            colour_map: get_form_value('colours')
+        }
+    }
+    return request_data;
+}
+
+document.getElementById('main-form').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent form submission from refreshing the page
+      const request_data = prepare_api_inputs();
+      const image_area = document.getElementById("image-area");
+      image_area.innerHTML = "<p>(computing image)</p>";
+      fetch('/api/tongue', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(request_data)
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('response not ok');
+        }
+        image_area.innerHTML = "";
+        return response.blob();
+      })
+      .then(blob => {
+        const image_url = URL.createObjectURL(blob);
+        const image_area = document.getElementById('image-area');
+        image_area.innerHTML = `<img src="${image_url}" alt="tongues">`;
+      })
+      .catch(error => {
+        const image_area = document.getElementById('image-area');
+        image_area.innerHTML = `<p>(there was an issue)</p>`;
+      });
+    });
+  </script>
+
+</body>
+</html>
