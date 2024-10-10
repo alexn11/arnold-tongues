@@ -1,0 +1,34 @@
+{
+    "family": "2xdsm",
+    "dynamics": {
+        "default_starting_point": 0.2142,
+        "max_period": 10,
+        "periodicity_tol": 1.0e-4,
+        "nb_starting_points": 5,
+        "nb_initial_iterations": 500
+    },
+    "domain": {
+        "a_range": [ 0.5, 1.0 ],
+        "b_range": [ 0.0625, 1.0 ]
+    },
+    "images": {
+        "_width": 12,
+        "_height": 12,
+        "width": 1600,
+        "height": 1600,
+        "image_names": {
+            "periods": "ddsm-blowup"
+        }
+    },
+    "misc": {
+        "show_progress": true
+    }
+}
+
+
+
+
+
+
+
+
