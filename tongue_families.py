@@ -47,11 +47,15 @@ def evaluate_straight_sine(x: FloatOrArray):
   y = numpy.where(numpy.isnan(y) & (x <= 0.75), 2. - 4. * x, 4. * x - 4.)
   return y
 
+def evaluate_straight_sine_v2(x: FloatOrArray):
+  y = numpy.where(x <= 0.5, 4.*x - 1.0, -4.*x + 3.0)
+  return y
+
 def compute_doubling_plus_straight_sine_critical_points(a, b):
   return [ 0., 0. ]
 
 def evaluate_lifted_doubling_plus_straight_sine(a, b, x):
-  return 2. * x + a + 0.5 * b * evaluate_straight_sine(x)
+  return 2. * x + a + 0.5 * b * evaluate_straight_sine_v2(x)
 
 def eval_doubling_plus_straight_sine(a, b, x):
   return numpy.mod(evaluate_lifted_doubling_plus_straight_sine(a, b, x), 1.)
