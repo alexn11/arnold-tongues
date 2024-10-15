@@ -1,5 +1,5 @@
 flask>=2.2
 matplotlib>=3.5
 numpy>=1.24
-PIL>=10.3
+pillow>=10.3
 tqdm>=4.64
