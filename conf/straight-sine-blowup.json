@@ -10,7 +10,7 @@
         "nb_initial_iterations_v2": 1200,
         "max_period": 20,
         "max_period_v2": 50,
-        "periodicity_tol": 1.0e-3
+        "periodicity_tol": 1.0e-5
     },
     "domain": {
         "a_range": [ 0.75, 0.762 ],
