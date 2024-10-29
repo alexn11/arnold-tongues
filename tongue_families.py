@@ -43,8 +43,8 @@ def eval_double_dsm(a, b, x):
     return compute_mod_1(eval_lifted_double_dsm (a, b, x)) 
 
 def evaluate_straight_sine(x: FloatOrArray):
-  y = numpy.where(x <= 0.25, 4.*x, numpy.nan)
-  y = numpy.where(numpy.isnan(y) & (x <= 0.75), 2. - 4. * x, 4. * x - 4.)
+  y = numpy.where(x <= 0.25, 4.*x, 2. - 4. * x)
+  y = numpy.where(x > 0.75, 4. * x - 4., y)
   return y
 
 def evaluate_straight_sine_v2(x: FloatOrArray):
@@ -55,7 +55,7 @@ def compute_doubling_plus_straight_sine_critical_points(a, b):
   return [ 0., 0. ]
 
 def evaluate_lifted_doubling_plus_straight_sine(a, b, x):
-  return 2. * x + a + 0.5 * b * evaluate_straight_sine_v2(x)
+  return 2. * x + a + 0.5 * b * evaluate_straight_sine(x)
 
 def eval_doubling_plus_straight_sine(a, b, x):
   return numpy.mod(evaluate_lifted_doubling_plus_straight_sine(a, b, x), 1.)

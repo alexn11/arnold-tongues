@@ -43,7 +43,7 @@ python tongues3.py conf/tent.json
 
 # testing
 
-in the root folder, run:
+in the root folder, run (requires `pytest` installed):
 ```bash
 pytest
 ```
